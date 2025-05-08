@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-db
+  template:
+    metadata:
+      labels:
+        app: users-db
+    spec:
+      containers:
+      - name: users-db
+        image: mariadb:10.11
+        ports:
+        - containerPort: 3308  # Alterado para a porta 3307
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "Kubernetes@"   # Senha de root do MariaDB
+        - name: MYSQL_TCP_PORT
+          value: "3308"   # Configurar a porta do MariaDB para 3307
+        volumeMounts:
+        - name: users-db-persistent-storage
+          mountPath: /var/lib/users/mysql  # Altere o caminho para /var/lib/mysql (padrão do MariaDB)
+      volumes:
+      - name: users-db-persistent-storage
+        persistentVolumeClaim:
+          claimName: users-db-pvc   # Nome do PVC para o armazenamento persistente
