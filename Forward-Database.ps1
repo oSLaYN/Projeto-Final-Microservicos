@@ -11,12 +11,12 @@ if (-not $minikubeStatus) {
     exit
 }
 
-$service_users = kubectl get service users-db -n users-db --no-headers -o custom-columns=":metadata.name" 2>$null
+$service = kubectl get service maria-db -n maria-db --no-headers -o custom-columns=":metadata.name" 2>$null
 
-if (-not $service_users) {
-    Write-Host "`n[ERRO] Serviço 'users-db' não encontrado. Verifique se o serviço está correto."
+if (-not $service) {
+    Write-Host "`n[ERRO] Serviço 'maria-db' não encontrado. Verifique se o serviço está correto."
     exit
 }
 
-Write-Host "`nIniciando port-forward de localhost:30000 -> users-db:3306"
-kubectl port-forward service/users-db 30000:3306 -n users-db
+Write-Host "`nIniciando port-forward de localhost:30000 -> maria-db:3306"
+kubectl port-forward service/maria-db 30000:3306 -n maria-db
