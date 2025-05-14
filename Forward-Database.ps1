@@ -11,12 +11,12 @@ if (-not $minikubeStatus) {
     exit
 }
 
-$service_tasks = kubectl get service tasks-db -n tasks-db --no-headers -o custom-columns=":metadata.name" 2>$null
+$service_users = kubectl get service users-db -n users-db --no-headers -o custom-columns=":metadata.name" 2>$null
 
-if (-not $service_tasks) {
-    Write-Host "`n[ERRO] Serviço 'tasks-db' não encontrado. Verifique se o serviço está correto."
+if (-not $service_users) {
+    Write-Host "`n[ERRO] Serviço 'users-db' não encontrado. Verifique se o serviço está correto."
     exit
 }
 
-Write-Host "`nIniciando port-forward de localhost:32051 -> tasks-db:3307"
-kubectl port-forward service/tasks-db 32051:3307 -n tasks-db
+Write-Host "`nIniciando port-forward de localhost:30000 -> users-db:3306"
+kubectl port-forward service/users-db 30000:3306 -n users-db

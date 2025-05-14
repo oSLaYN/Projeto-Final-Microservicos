@@ -5,8 +5,7 @@ minikube start
 minikube ip
 
 # Executa os scripts em segundo plano (processos separados)
-Start-Process -NoNewWindow -FilePath "powershell.exe" -ArgumentList "-File", "./Forward-TasksDB.ps1"
-Start-Process -NoNewWindow -FilePath "powershell.exe" -ArgumentList "-File", "./Forward-UsersDB.ps1"
+Start-Process -NoNewWindow -FilePath "powershell.exe" -ArgumentList "-File", "./Forward-Database.ps1"
 
 # Registra um evento de saída para quando o PowerShell for fechado
 $exitingEvent = Register-EngineEvent PowerShell.Exiting -Action {
