@@ -11,30 +11,68 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    background-color: lightblue;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(135deg,
+    #01010d 0%,
+    #050533 30%,
+    #0a0a4f 60%,
+    #1a1a80 85%);   
     color: white;
 }
 
 h1 {
     font-weight: bold;
-    text-shadow: 1.5px 1.5px 5px black;
+    margin: 1%;
 }
 
+h2 {
+    font-weight: bold;
+    color: #050533;
+    font-size: 30px;
+    margin-bottom: 40px;
+}
+
+
 div {
+    background-color: white;
+    width: 400px;
+    border-radius: 20px;
+    margin-top: 100px;
+    padding: 3%;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     justify-content: center;
-    padding-top: 2%;
+}
+
+content{
+    background-color: white;
+    text-align: center;
 }
 
 a {
     text-align: center;
     color: white;
     font-size: 24px;
+}
+
+.button {
+    display: inline-block;
+    width: 200px;
+    padding: 10px 20px;
+    background-color: #0a0a54;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s;
+    margin: 40px;
+}
+  
+.button:hover {
+    background-color: #323253;
 }
 
 form {
@@ -45,11 +83,119 @@ form {
     padding-top: 1%;
 }
 
+/* -----------CSS dos Forms----------*/
 form input {
+    background-color: rgb(213, 213, 213);
+    color: rgb(74, 74, 74);
     padding: 1%;
-    margin: 1%;
-    border: 1px solid black;
+    margin: 5%;
+    border: 1px;
     border-radius: 4px;
     font-size: medium;
     font-weight: bolder;
+}
+
+#RegisterForm, #LoginForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#RegisterForm input[type="text"],
+#RegisterForm input[type="password"],
+#LoginForm input[type="text"],
+#LoginForm input[type="password"] {
+    border: none;
+    border-bottom: 1px solid #0a0a54; 
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    background: transparent;
+    outline: none;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+#RegisterForm input[type="submit"],
+#LoginForm input[type="submit"] {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #0a0a54;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#LoginForm input[type="submit"]:hover,
+#RegisterForm input[type="submit"]:hover {
+    background-color: #323253;
+}
+
+/* Tarefas */
+
+
+.tab-buttons {
+    background-color: white;
+    width: 800px;
+    border-radius: 20px;
+    margin-top: 50px;
+    padding: 0.5%;
+    display: inline;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.tab-buttons button {
+    background-color: #0a0a54;
+    color: white;
+    border: none;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px 5px;
+    margin: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.tab-buttons button:hover,
+.tab-buttons button.active-tab {
+    background-color: #323253;
+}
+
+.tasksTab {
+    text-align: center;
+    width: 50%;
+    background-color: #fff;
+}
+
+.tasks{
+    background-color: #0a0a54;
+    width: 80%;
+    margin: 3%;
+}
+
+.tasks h3{
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.tasksTab h1{
+   color: #050533; 
+   font-size: 22px;
+    font-weight: normal;
+}
+
+.tasksDescription{
+    background-color: #fff;
+    color:#050533;
+    text-align: justify;
+    border-radius: 5px;
+    margin: 10px;
+    width: 90%;
 }
