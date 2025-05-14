@@ -135,9 +135,22 @@ form input {
 /* Tarefas */
 
 
+#divTask {
+    background-color: white;
+    width: 400px;
+    border-radius: 20px;
+    margin-top: 100px;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
 .tab-buttons {
     background-color: white;
-    width: 800px;
+    width: 50%;
     border-radius: 20px;
     margin-top: 50px;
     padding: 0.5%;
@@ -171,6 +184,13 @@ form input {
     text-align: center;
     width: 50%;
     background-color: #fff;
+    margin: 2%;
+}
+
+.tasksTab h1{
+   color: #050533; 
+   font-size: 22px;
+    font-weight: normal;
 }
 
 .tasks{
@@ -184,12 +204,7 @@ form input {
     font-size: 18px;
     font-weight: normal;
 }
-
-.tasksTab h1{
-   color: #050533; 
-   font-size: 22px;
-    font-weight: normal;
-}
+    
 
 .tasksDescription{
     background-color: #fff;
@@ -198,4 +213,31 @@ form input {
     border-radius: 5px;
     margin: 10px;
     width: 90%;
+}
+
+.tasksButtons {
+    display: flex;
+    flex-direction: row;         /* botões lado a lado */
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+    background-color: none;   
+    background-color: transparent;            /* espaçamento entre os botões */
+}
+
+.tasksButtons button {
+    background-color: #fff;
+    color: #050533;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    width: auto;              
+}
+
+.tasksButtons button:hover{
+    background-color: #c6c6eb;
 }
