@@ -39,7 +39,7 @@ routes.post("/createTask/:userid", async (req, res) => {
             const user = await fetch(`localhost:33000/api/v1/users/getUserByID?id=${userid}`);
             if (!user) { return res.status(404).send("Utilizador Inválido.") };
             try {
-                const {err, results} = await sqlQuery("INSERT INTO tasks (?, ?) VALUES (userid, title, description)", [userid, task]);
+                const {err, results} = await sqlQuery("INSERT INTO tasks (?, ?, ?, ?) VALUES (userid, title, description, done)", [userid, title, description, 0]);
                 if (err) return res.status(500).send('Ocorreu um Erro:'+err.message);
                 return res.status(200).json(results);
             } catch (error) {
@@ -63,7 +63,7 @@ routes.post("/updateTask/:taskid", async (req, res) => {
         const isAuthorized = await fetch('localhost:31000/api/v1/auth/isAuthorized');
         if (!isAuthorized) { return res.status(400).send("Sessão Inválida, Sem Acesso.")}
         try {
-            const {err, results} = await sqlQuery("UPDATE tasks SET task=?, done=? WHERE id=?", [taskinfo, taskstatus, taskid]);
+            const {err, results} = await sqlQuery("UPDATE tasks SET title=?, description=?, done=? WHERE id=?", [tasktitle, taskinfo, taskstatus, taskid]);
             if (err) return res.status(500).send('Ocorreu um Erro:'+err.message);
             return res.status(200).json(results);
         } catch (error) {
