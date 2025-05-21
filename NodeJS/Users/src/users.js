@@ -49,14 +49,15 @@ routes.get("/getUserByID", async (req, res) => {
 });
 
 routes.post("/createUser", async (req, res) => {
-    const username = (req.query && req.query.username ? req.query.username : null);
-    const fullname = (req.query && req.query.fullname ? req.query.fullname : null);
-    const password = (req.query && req.query.password ? req.query.password : null);
-    if (!username || username==null || !fullname || fullname == null || !password || password == null) return res.status(404).send("Credenciais Inválidas.");
     try {
-        const {err, results} = await sqlQuery("INSERT INTO users (?, ?, ?) VALUES (username, fullname, password)", [username, fullname, password]);
-        if (err) return res.status(500).send("Ocorreu um Erro: "+err.message);
-        return res.status(200).json(results);
+        const {username, fullname, password} = req.body;
+        try {
+            const {err, results} = await sqlQuery("INSERT INTO users (?, ?, ?) VALUES (username, fullname, password)", [username, fullname, password]);
+            if (err) return res.status(500).send("Ocorreu um Erro: "+err.message);
+            return res.status(200).json(results);
+        } catch (error) {
+            return res.status(500).send('Ocorreu um Erro: '+ error);
+        }
     } catch (error) {
         return res.status(500).send('Ocorreu um Erro: '+ error);
     }
