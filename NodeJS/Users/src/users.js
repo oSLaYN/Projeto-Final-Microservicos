@@ -3,7 +3,7 @@ const app = express();
 var routes = express.Router();
 const util = require('util');
 const sql = require('./pool');
-const sqlQuery = util.promisify(sql).bind(sql);
+const sqlQuery = util.promisify(sql.query).bind(sql);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
