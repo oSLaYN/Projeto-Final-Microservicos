@@ -1,9 +1,10 @@
 const express = require('express');
+const app = express();
+var routes = express.Router();
 const bcrypt = require('bcrypt');
 const auth = require('./jwt');
 const util = require('util');
 const UserAuthorized = util.promisify(auth.isAuthorized);
-var routes = express.Router();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

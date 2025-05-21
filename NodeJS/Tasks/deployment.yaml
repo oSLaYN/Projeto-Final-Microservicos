@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node-app-deployment
-  namespace: nodejs
+  name: tasks-node
+  namespace: tasks-node
 spec:
   replicas: 1
   selector:
@@ -18,7 +18,7 @@ spec:
         image: node-app:1.0  # Será atualizado
         imagePullPolicy: Never
         ports:
-        - containerPort: 3000
+        - containerPort: 4000
         resources:
           limits:
             memory: "512Mi"

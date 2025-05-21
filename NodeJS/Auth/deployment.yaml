@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node-app-deployment
-  namespace: nodejs
+  name: auth-node
+  namespace: auth-node
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: node-app
+      app: auth-node
   template:
     metadata:
       labels:
-        app: node-app
+        app: auth-node
     spec:
       containers:
       - name: node-app
