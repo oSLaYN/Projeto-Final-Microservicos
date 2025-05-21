@@ -184,25 +184,29 @@ form input {
     text-align: center;
     width: 50%;
     background-color: #fff;
+    color: #050533;
     margin: 2%;
 }
 
 .tasksTab h1{
-   color: #050533; 
-   font-size: 22px;
+    color: #050533; 
+    font-size: 22px;
     font-weight: normal;
 }
 
 .tasks{
-    background-color: #0a0a54;
+    background-color: #fff;
+    border: solid 1px #050533;
+    border-radius: 20px;
     width: 80%;
-    margin: 3%;
+    margin: 2%;
 }
 
 .tasks h3{
-    color: #fff;
+    color: #050533;
     font-size: 18px;
     font-weight: normal;
+    margin: 0px;
 }
     
 
@@ -211,8 +215,13 @@ form input {
     color:#050533;
     text-align: justify;
     border-radius: 5px;
-    margin: 10px;
+    margin: 1%;
     width: 90%;
+}
+
+.tasksDescription p{
+    margin: 0px;
+    color: #050533;
 }
 
 .tasksButtons {
@@ -220,24 +229,110 @@ form input {
     flex-direction: row;         /* botões lado a lado */
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin: 0px;
     gap: 10px;
     background-color: none;   
     background-color: transparent;            /* espaçamento entre os botões */
 }
 
 .tasksButtons button {
-    background-color: #fff;
-    color: #050533;
+    background-color: #050533;
+    color: #fff;
     border: none;
     padding: 8px 16px;
     border-radius: 10px;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s;
-    width: auto;              
+    width: auto;     
+    margin: 0px;         
 }
 
 .tasksButtons button:hover{
     background-color: #c6c6eb;
+}
+
+/*----------------Popup (modal)------------------
+
+/* Modal (Popup) */
+/* Modal (Popup) */
+.modal {
+    display: none; 
+    position: fixed;       /* Fixar na tela */
+    top: 0;
+    left: 0;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);  /* Fundo escurecido */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Centraliza o conteúdo do modal */
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 400px;
+    padding: 30px;
+    margin-top: 0.5%;
+    color: #050533;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Fecha (X) */
+.close {
+    align-self: flex-end;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Estilo dos campos do formulário */
+.modal-content input[type="text"],
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+    resize: none;
+}
+
+.modal-content textarea{
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+    resize: none;
+}
+
+.modal-content textarea {
+    resize: vertical;
+    min-height: 180px;
+}
+
+.modal-content input[type="submit"] {
+    background-color: #0a0a54;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-content input[type="submit"]:hover {
+    background-color: #323253;
+}
+
+.close {
+    align-self: flex-end;
+    font-size: 24px;
+    cursor: pointer;
 }
