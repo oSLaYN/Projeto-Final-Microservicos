@@ -7,14 +7,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: node-app
+      app: tasks-node
   template:
     metadata:
       labels:
-        app: node-app
+        app: tasks-node
     spec:
       containers:
-      - name: node-app
+      - name: tasks-node
         image: node-app:1.0  # Será atualizado
         imagePullPolicy: Never
         ports:

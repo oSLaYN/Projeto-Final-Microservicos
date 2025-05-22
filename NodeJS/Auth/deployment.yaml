@@ -14,7 +14,7 @@ spec:
         app: auth-node
     spec:
       containers:
-      - name: node-app
+      - name: auth-node
         image: node-app:1.0  # Será atualizado
         imagePullPolicy: Never
         ports:

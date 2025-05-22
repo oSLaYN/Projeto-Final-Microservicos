@@ -8,6 +8,8 @@ minikube ip
 Start-Process -NoNewWindow -FilePath "powershell.exe" -ArgumentList "-File", "./Forward-Database.ps1"
 Start-Process -NoNewWindow -FilePath "powershell.exe" -ArgumentList "-File", "./Forward-Nginx.ps1"
 Start-Process -NoNewWindow -FilePath "powershell.exe" -ArgumentList "-File", "./Forward-Auth-Node.ps1"
+Start-Process -NoNewWindow -FilePath "powershell.exe" -ArgumentList "-File", "./Forward-Tasks-Node.ps1"
+Start-Process -NoNewWindow -FilePath "powershell.exe" -ArgumentList "-File", "./Forward-Users-Node.ps1"
 
 # Registra um evento de saída para quando o PowerShell for fechado
 $exitingEvent = Register-EngineEvent PowerShell.Exiting -Action {
