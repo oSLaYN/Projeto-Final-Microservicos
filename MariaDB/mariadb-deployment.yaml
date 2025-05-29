@@ -24,7 +24,7 @@ spec:
           value: "3306"   # Configurar a porta do MariaDB para 3307
         volumeMounts:
         - name: maria-db-persistent-storage
-          mountPath: /var/lib/users/mysql  # Altere o caminho para /var/lib/mysql (padrão do MariaDB)
+          mountPath: /var/lib/mysql  # Altere o caminho para /var/lib/mysql (padrão do MariaDB)
       volumes:
       - name: maria-db-persistent-storage
         persistentVolumeClaim:

@@ -7,4 +7,4 @@ app.use('/api/v1/users', users);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.listen(5000, () => { console.log('> Users System on: http://localhost:5000') })
+app.listen(3000, () => { console.log('> Users System on: http://localhost:3000') })

@@ -18,5 +18,5 @@ if (-not $service) {
     exit
 }
 
-Write-Host "`nIniciando port-forward de localhost:32500 -> nginx:80"
-kubectl port-forward service/nginx 32500:80 -n nginx
+Write-Host "`nIniciando port-forward de localhost:80 -> nginx:80"
+kubectl port-forward service/nginx 80:80 -n nginx

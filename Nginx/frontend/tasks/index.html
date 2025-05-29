@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../styles.css">
+        <title>Tasks Page</title>
+    </head>
+    <body>
+        <div class="tab-buttons">
+            <button onclick="showTab('create')">Criar Tarefa</button>
+        </div>
+
+        <div class="tasksTab">
+            <h1>Visualizar Tarefas</h1>
+            <div class="tasks">
+                <h3>Fitas de Finalistas</h3>
+                <div class="tasksDescription">
+                    <p>Esta tarefa consiste na realização das fitas da Benção das Pastas, que devem ser realizadas
+                        com uma caneta específica, e entregues antes do dia 17 de Maio de 2025
+                    </p>
+                </div>
+                <p><strong>Estado:</strong> <span class="taskState">Não Concluída</span></p>
+                <div class="tasksButtons">
+                    <button onclick="openEditModal(this)">Editar Tarefa</button>
+                    <button onclick="">Exluir Tarefa</button>
+                </div>
+            </div>
+             <div class="tasks">
+                <h3>Fitas de Finalistas</h3>
+                <div class="tasksDescription">
+                    <p>Esta tarefa consiste na realização das fitas da Benção das Pastas, que devem ser realizadas
+                        com uma caneta específica, e entregues antes do dia 17 de Maio de 2025
+                    </p>
+                </div>
+                <p>Estado:</p>
+                <div class="tasksButtons">
+                    <button onclick="openEditModal(this)">Editar Tarefa</button>
+                    <button onclick="">Exluir Tarefa</button>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de Criar Tarefa -->
+        <div id="createTaskModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Criar Nova Tarefa</h2>
+                <form id="createTaskForm">
+                    <input type="text" name="titulo" placeholder="Título da tarefa" required><br>
+                    <textarea name="descricao" placeholder="Descrição da tarefa" required></textarea><br>
+                    <select name="estado" required>
+                        <option value="" disabled selected>Estado</option>
+                        <option value="Concluída">Concluída</option>
+                        <option value="Não Concluída">Não Concluída</option>
+                    </select><br><br>
+                    <input type="submit" value="Criar">
+                </form>
+            </div>
+        </div>
+        <!-- Modal de Editar Tarefa -->
+        <div id="editTaskModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>Editar Tarefa</h2>
+                <form id="editTaskForm">
+                    <input type="text" name="titulo" id="editTitulo" required><br>
+                    <textarea name="descricao" id="editDescricao" required></textarea><br>
+                    <select name="estado" id="editEstado" required>
+                        <option value="Concluída">Concluída</option>
+                        <option value="Não Concluída">Não Concluída</option>
+                    </select><br><br>
+                    <input type="submit" value="Guardar Alterações">
+                </form>
+            </div>
+        </div>
+        <script>
+            function showTab(tabName) {
+                if (tabName === 'create') {
+                    document.getElementById('createTaskModal').style.display = 'flex';
+                    document.body.classList.add('modal-open');
+                }
+            }
+
+            function closeModal() {
+                document.getElementById('createTaskModal').style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }
+
+        
+            // Fecha o modal se clicar fora dele
+            window.onclick = function(event) {
+                const modal = document.getElementById('createTaskModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            }
+            
+            function openEditModal(button) {
+                const task = button.closest('.tasks');
+                const titulo = task.querySelector('h3').innerText;
+                const descricao = task.querySelector('.tasksDescription p').innerText;
+                const estado = task.querySelector('p:nth-of-type(2)')?.innerText || "Não Concluída"; // Estado da tarefa
+            
+                document.getElementById('editTitulo').value = titulo;
+                document.getElementById('editDescricao').value = descricao;
+                document.getElementById('editEstado').value = estado;
+            
+                document.getElementById('editTaskModal').style.display = 'flex';
+                document.body.classList.add('modal-open');
+            
+                // Armazena a referência da tarefa atual para depois atualizar
+                currentTaskEditing = task;
+            }
+        
+            function closeEditModal() {
+                document.getElementById('editTaskModal').style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }
+        
+            // Fecha modal se clicar fora
+            window.onclick = function(event) {
+                const createModal = document.getElementById('createTaskModal');
+                const editModal = document.getElementById('editTaskModal');
+            
+                if (event.target === createModal) closeModal();
+                if (event.target === editModal) closeEditModal();
+            }
+        
+            // Referência da tarefa sendo editada
+            let currentTaskEditing = null;
+        
+            document.getElementById('editTaskForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+            
+                const newTitulo = document.getElementById('editTitulo').value;
+                const newDescricao = document.getElementById('editDescricao').value;
+                const newEstado = document.getElementById('editEstado').value;
+            
+                // Atualiza os campos diretamente
+                currentTaskEditing.querySelector('h3').innerText = newTitulo;
+                currentTaskEditing.querySelector('.tasksDescription p').innerText = newDescricao;
+                const estadoParagrafo = currentTaskEditing.querySelector('p:nth-of-type(2)');
+                if (estadoParagrafo) {
+                    estadoParagrafo.innerText = newEstado;
+                }
+            
+                closeEditModal();
+            });
+        </script>
+        <script src="../scripts.js"></script>
+    </body>
+    <script src="../scripts.js"></script>
+</html>

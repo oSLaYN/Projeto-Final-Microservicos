@@ -15,10 +15,10 @@ spec:
     spec:
       containers:
       - name: tasks-node
-        image: node-app:1.0  # Será atualizado
+        image: tasks-node:1.0  # Será atualizado
         imagePullPolicy: Never
         ports:
-        - containerPort: 4000
+        - containerPort: 2750
         resources:
           limits:
             memory: "512Mi"

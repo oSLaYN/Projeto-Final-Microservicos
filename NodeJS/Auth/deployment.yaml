@@ -15,10 +15,10 @@ spec:
     spec:
       containers:
       - name: auth-node
-        image: node-app:1.0  # Será atualizado
+        image: auth-node:1.0  # Será atualizado
         imagePullPolicy: Never
         ports:
-        - containerPort: 3000
+        - containerPort: 2500
         resources:
           limits:
             memory: "512Mi"

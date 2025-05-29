@@ -1,8 +1,8 @@
 const mysql = require('mysql');
 const pool = mysql.createPool({
   connectionLimit: 10, // adjust based on your needs
-  host: '10.244.0.28',
-  port: '30000',
+  host: '10.96.18.10',
+  port: '3306',
   user: 'root',
   password: 'Kubernetes@',
   database: 'users'

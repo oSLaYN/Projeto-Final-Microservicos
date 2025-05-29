@@ -18,5 +18,5 @@ if (-not $service) {
     exit
 }
 
-Write-Host "`nIniciando port-forward de localhost:32000 -> users-node:5000"
-kubectl port-forward service/users-node 32000:5000 -n users-node
+Write-Host "`nIniciando port-forward de localhost:32000 -> users-node:3000"
+kubectl port-forward service/users-node 32000:3000 -n users-node

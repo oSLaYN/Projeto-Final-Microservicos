@@ -4,10 +4,10 @@ metadata:
   name: tasks-node
   namespace: tasks-node
 spec:
-  type: NodePort
+  type: ClusterIP
+  clusterIP: 10.96.18.4
   ports:
-    - port: 4000
-      targetPort: 4000
-      nodePort: 31500
+    - port: 2750
+      targetPort: 2750
   selector:
     app: tasks-node

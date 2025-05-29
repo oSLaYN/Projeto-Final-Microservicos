@@ -7,4 +7,4 @@ app.use('/api/v1/auth', auth);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.listen(3000, () => { console.log('> Auth System on: http://localhost:3000') })
+app.listen(2500, () => { console.log('> Auth System on: http://localhost:2500') })

@@ -1,0 +1,338 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(135deg,
+    #01010d 0%,
+    #050533 30%,
+    #0a0a4f 60%,
+    #1a1a80 85%);   
+    color: white;
+}
+
+h1 {
+    font-weight: bold;
+    margin: 1%;
+}
+
+h2 {
+    font-weight: bold;
+    color: #050533;
+    font-size: 30px;
+    margin-bottom: 40px;
+}
+
+
+div {
+    background-color: white;
+    width: 400px;
+    border-radius: 20px;
+    margin-top: 100px;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+content{
+    background-color: white;
+    text-align: center;
+}
+
+a {
+    text-align: center;
+    color: white;
+    font-size: 24px;
+}
+
+.button {
+    display: inline-block;
+    width: 200px;
+    padding: 10px 20px;
+    background-color: #0a0a54;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s;
+    margin: 40px;
+}
+  
+.button:hover {
+    background-color: #323253;
+}
+
+form {
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    text-align: center;
+    padding-top: 1%;
+}
+
+/* -----------CSS dos Forms----------*/
+form input {
+    background-color: rgb(213, 213, 213);
+    color: rgb(74, 74, 74);
+    padding: 1%;
+    margin: 5%;
+    border: 1px;
+    border-radius: 4px;
+    font-size: medium;
+    font-weight: bolder;
+}
+
+#RegisterForm, #LoginForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#RegisterForm input[type="text"],
+#RegisterForm input[type="password"],
+#LoginForm input[type="text"],
+#LoginForm input[type="password"] {
+    border: none;
+    border-bottom: 1px solid #0a0a54; 
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    background: transparent;
+    outline: none;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+#RegisterForm input[type="submit"],
+#LoginForm input[type="submit"] {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #0a0a54;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#LoginForm input[type="submit"]:hover,
+#RegisterForm input[type="submit"]:hover {
+    background-color: #323253;
+}
+
+/* Tarefas */
+
+
+#divTask {
+    background-color: white;
+    width: 400px;
+    border-radius: 20px;
+    margin-top: 100px;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.tab-buttons {
+    background-color: white;
+    width: 50%;
+    border-radius: 20px;
+    margin-top: 50px;
+    padding: 0.5%;
+    display: inline;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.tab-buttons button {
+    background-color: #0a0a54;
+    color: white;
+    border: none;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px 5px;
+    margin: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.tab-buttons button:hover,
+.tab-buttons button.active-tab {
+    background-color: #323253;
+}
+
+.tasksTab {
+    text-align: center;
+    width: 50%;
+    background-color: #fff;
+    color: #050533;
+    margin: 2%;
+}
+
+.tasksTab h1{
+    color: #050533; 
+    font-size: 22px;
+    font-weight: normal;
+}
+
+.tasks{
+    background-color: #fff;
+    border: solid 1px #050533;
+    border-radius: 20px;
+    width: 80%;
+    margin: 2%;
+}
+
+.tasks h3{
+    color: #050533;
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0px;
+}
+    
+
+.tasksDescription{
+    background-color: #fff;
+    color:#050533;
+    text-align: justify;
+    border-radius: 5px;
+    margin: 1%;
+    width: 90%;
+}
+
+.tasksDescription p{
+    margin: 0px;
+    color: #050533;
+}
+
+.tasksButtons {
+    display: flex;
+    flex-direction: row;         /* botões lado a lado */
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    gap: 10px;
+    background-color: none;   
+    background-color: transparent;            /* espaçamento entre os botões */
+}
+
+.tasksButtons button {
+    background-color: #050533;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    width: auto;     
+    margin: 0px;         
+}
+
+.tasksButtons button:hover{
+    background-color: #c6c6eb;
+}
+
+/*----------------Popup (modal)------------------
+
+/* Modal (Popup) */
+/* Modal (Popup) */
+.modal {
+    display: none; 
+    position: fixed;       /* Fixar na tela */
+    top: 0;
+    left: 0;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);  /* Fundo escurecido */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Centraliza o conteúdo do modal */
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 400px;
+    padding: 30px;
+    margin-top: 0.5%;
+    color: #050533;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Fecha (X) */
+.close {
+    align-self: flex-end;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Estilo dos campos do formulário */
+.modal-content input[type="text"],
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+    resize: none;
+}
+
+.modal-content textarea{
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+    resize: none;
+}
+
+.modal-content textarea {
+    resize: vertical;
+    min-height: 180px;
+}
+
+.modal-content input[type="submit"] {
+    background-color: #0a0a54;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-content input[type="submit"]:hover {
+    background-color: #323253;
+}
+
+.close {
+    align-self: flex-end;
+    font-size: 24px;
+    cursor: pointer;
+}

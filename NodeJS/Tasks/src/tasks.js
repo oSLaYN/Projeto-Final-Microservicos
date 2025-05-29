@@ -95,6 +95,8 @@ routes.delete("/deleteTask", async (req, res) => {
         } catch (error) {
             return res.status(500).send('Ocorreu um Erro:'+error);
         }
+    } catch (error) {
+        return res.status(500).send('Ocorreu um Erro:'+error);
     }
 });
 

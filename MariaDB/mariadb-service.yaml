@@ -4,6 +4,7 @@ metadata:
   name: maria-db
 spec:
   type: NodePort
+  clusterIP: 10.96.18.10
   selector:
     app: maria-db
   ports:
