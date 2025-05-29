@@ -10,74 +10,62 @@ app.use(express.urlencoded({extended: true}));
 
 routes.get("/getUsers", async (req, res) => {
     try {
-        const {err, results} = await sqlQuery("SELECT * FROM users");
-        if (err) return res.status(500).send("Ocorreu um Erro: "+err.message);
-        return res.status(200).json(results);
+        const results = await sqlQuery("SELECT * FROM users");
+        return res.status(200).json(results || []);
     } catch (error) {
-        return res.status(500).send('Ocorreu um Erro: '+ error);
+        return res.status(500).json({ message: "Ocorreu um erro: " + error });
     }
 });
 
 routes.get("/getUser", async (req, res) => {
-    const username = (req.query && req.query.username ? req.query.username : null)
-    if (!username || username==null) return res.status(404).send("Credenciais Inválidas.");
+    const username = req.query?.username;
+    if (!username) { return res.status(400).json({ message: "Username inválido." }); }
     try {
-        const {err, results} = await sqlQuery("SELECT * FROM users WHERE username = ?", [username]);
-        if (err) return res.status(500).send("Ocorreu um Erro: "+err.message);
-        return res.status(200).json(results);
+        const results = await sqlQuery("SELECT * FROM users WHERE username = ?", [username]);
+        return res.status(200).json(results || []);
     } catch (error) {
-        return res.status(500).send('Ocorreu um Erro: '+ error);
+        return res.status(500).json({ message: "Ocorreu um erro: " + error });
     }
 });
 
 routes.get("/getUserByID", async (req, res) => {
-    const id = (req.query && req.query.id ? req.query.id : null)
-    if (!id || id==null) return res.status(404).send("ID de Utilizador Inválido.");
+    const id = req.query?.id;
+    if (!id) return res.status(400).json({ message: "ID de utilizador inválido." });
     try {
-        const isAuthorized = await fetch('localhost:31000/api/v1/auth/isAuthorized');
-        if (!isAuthorized) { return res.status(400).send("Sessão Inválida, Sem Acesso. ")}
-        try {
-            const {err, results} = await sqlQuery("SELECT * FROM users WHERE id = ?", [id]);
-            if (err) return res.status(500).send("Ocorreu um Erro: "+err.message);
-            return res.status(200).json(results);
-        } catch (error) {
-            return res.status(500).send('Ocorreu um Erro: '+ error);
-        }
+        const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
+        if (!isAuthorized) { return res.status(400).json({message: "Sessão Inválida, Sem Acesso."})}
+        const results = await sqlQuery("SELECT * FROM users WHERE id = ?", [id]);
+        return res.status(200).json(results || []);
     } catch (error) {
-        return res.status(500).send('Ocorreu um Erro: '+ error);
+        return res.status(500).json({ message: "Ocorreu um erro: " + error });
     }
 });
 
 routes.post("/createUser", async (req, res) => {
     try {
-        const {username, fullname, password} = req.body;
+        const { username, fullname, password } = req.body;
+        if (!username || !fullname || !password) { return res.status(400).json({ message: "Dados em falta." }); }
         try {
-            const {err, results} = await sqlQuery("INSERT INTO users (?, ?, ?) VALUES (username, fullname, password)", [username, fullname, password]);
-            if (err) return res.status(500).send("Ocorreu um Erro: "+err.message);
-            return res.status(200).json(results);
+            const results = await sqlQuery("INSERT INTO users (username, fullname, password) VALUES (?, ?, ?)", [username, fullname, password]);
+            return res.status(200).json({ message: "Utilizador criado com sucesso!" });
         } catch (error) {
-            return res.status(500).send('Ocorreu um Erro: '+ error);
+            return res.status(500).json({ message: "Ocorreu um erro: " + error });
         }
     } catch (error) {
-        return res.status(500).send('Ocorreu um Erro: '+ error);
+        return res.status(500).json({ message: "Ocorreu um erro: " + error });
     }
 });
 
 routes.delete("/deleteUser", async (req, res) => {
-    const username = (req.query && req.query.username ? req.query.username : null);
-    if (!username || username==null) return res.status(404).send("Credenciais Inválidas.");
+    const username = req.query?.username;
+    if (!username) return res.status(400).json({ message: "Username inválido." });
     try {
-        const isAuthorized = await fetch('localhost:31000/api/v1/auth/isAuthorized');
-        if (!isAuthorized) { return res.status(400).send("Sessão Inválida, Sem Acesso. ")}
-        try {
-            const {err, results} = await sqlQuery("DELETE FROM users WHERE username = ?", [username]);
-            if (err) return res.status(500).send("Ocorreu um Erro: "+err.message);
-            return res.status(200).json(results);
-        } catch (error) {
-            return res.status(500).send('Ocorreu um Erro: '+ error);
-        }
+        const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
+        if (!isAuthorized) { return res.status(400).json({message: "Sessão Inválida, Sem Acesso."})}
+        const results = await sqlQuery("DELETE FROM users WHERE username = ?", [username]);
+        return res.status(200).json({ message: "Utilizador removido com sucesso." });
     } catch (error) {
-        return res.status(500).send('Ocorreu um Erro: '+ error);
+        return res.status(500).json({ message: "Ocorreu um erro: " + error });
     }
 });
 

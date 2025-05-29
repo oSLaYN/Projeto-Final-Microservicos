@@ -9,31 +9,44 @@ const UserAuthorized = util.promisify(auth.isAuthorized);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-routes.get('/authorized', async(req, res) => {
+routes.get('/isAuthorized', async(req, res) => {
     try {
         const isUserAuthorized = await UserAuthorized(req.cookies?.clientToken);
         if (!isUserAuthorized) return res.status(400).send("Sessão Inválida, Sem Acesso.");
         return res.status(200).send("Sessão Válida com Sucesso.");
     } catch (error) {
-        return res.status(500).send('Ocorreu um Erro: '+ error);
+        return res.status(500).json({message: 'Ocorreu um Erro: ', error})
     }
 });
 
 routes.post('/register', async(req, res) => {    
     try {
-        const {username, fullname, password} = req.body;
+        const { username, fullname, password } = req.body;
+        if (!username || !fullname || !password) { return res.status(400).json({ message: "Todos os campos são obrigatórios." }); }
+
         try {
-            const user = await fetch(`localhost:33000/api/v1/users/getUser?username=${username}`);
-            if (user) { return res.status(400).send('Credenciais Já Existentes.') }
+            const response = await fetch(`http://10.96.18.2/api/users/getUser?username=${encodeURIComponent(username)}`);
+            if (!response.ok) { return res.status(500).json({message: 'Ocorreu um Erro: ', error}) }
+            const existingUsers = await response.json();
+            if (Array.isArray(existingUsers) && existingUsers.length > 0) { return res.status(400).json({ message: "Credenciais já existentes." }); }
+
             const cipherPassword = await bcrypt.hash(password, 12);
-            const createdUser = await fetch(`localhost:33000/api/v1/users/createUser`, { method: 'POST', body: {username, fullname, cipherPassword } });
-            if (!createdUser) { return res.status(500).send('Ocorreu um Erro.') }
-            return res.status(200).send("Utilizador Criado com Sucesso!");
+            const createdUserResponse = await fetch(`http://10.96.18.2/api/users/createUser`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, fullname, password: cipherPassword }),
+            });
+
+            if (!createdUserResponse.ok) {
+                const errorMsg = await createdUserResponse.json();
+                return res.status(500).json({message: 'Ocorreu um Erro: ', errorMsg})
+            }
+            return res.status(200).json({ message: "Utilizador criado com sucesso!" });
         } catch (error) {
-            return res.status(500).send('Ocorreu um Erro: '+ error);
+            return res.status(500).json({message: 'Ocorreu um Erro: ', error})
         }
     } catch (error) {
-        return res.status(500).send('Ocorreu um Erro: '+ error);
+        return res.status(500).json({message: 'Ocorreu um Erro: ', error})
     }
 });
 
@@ -41,19 +54,24 @@ routes.post('/login', async(req, res) => {
     try {
         const {username, password} = req.body;
         try {
-            const user = await fetch(`localhost:33000/api/v1/users/getUser?username=${username}`);
-            if (!user) { res.status(400).send("Utilizador Inválido.") };
-            const isPasswordValid = await bcrypt.compare(password, user.password);
-            if (!isPasswordValid) { return res.status(400).send('Credenciais Inválidas.') }
-            const token = await auth.createToken(user.id, user.username, user.fullname);
-            if (!token) { return res.status(500).send('Ocorreu um Erro.') }
-            res.cookie('clientToken', token);
-            return res.status(200).send("Utilizador Autenticado com Sucesso!");
+            const response = await fetch(`http://10.96.18.2/api/users/getUser?username=${username}`);
+            if (!response.ok) { return res.status(500).json({message: 'Ocorreu um Erro: ', error}) }
+            const existingUsers = await response.json();
+            if (Array.isArray(existingUsers) && existingUsers.length > 0) { 
+                const user = existingUsers[0];
+                const isPasswordValid = await bcrypt.compare(password, user.password);
+                if (!isPasswordValid) { return res.status(400).send('Credenciais Inválidas.') }
+                const token = await auth.createToken(user.id, user.username, user.fullname);
+                if (!token) { return res.status(500).send('Ocorreu um Erro.') }
+                res.cookie('clientToken', token);
+                return res.status(200).json({message: "Utilizador Autenticado com Sucesso!"});
+            }
+            return res.status(400).json({message: 'Credenciais Inválidas.'});
         } catch (error) {
-            return res.status(500).send('Ocorreu um Erro: '+ error);
+            return res.status(500).json({message: 'Ocorreu um Erro: ', error})
         }
     } catch (error) {
-        return res.status(500).send('Ocorreu um Erro: '+ error);
+        return res.status(500).json({message: 'Ocorreu um Erro: ', error})
     }
 });
 
@@ -62,7 +80,7 @@ routes.post('/logout', async(req, res) => {
         res.clearCookie('clientToken');
         return res.status(200).send('Logout Feito com Sucesso!');
     } catch (error) {
-        return res.status(500).send('Ocorreu um Erro: '+ error);
+        return res.status(500).json({message: 'Ocorreu um Erro: ', error})
     }
 });
 
