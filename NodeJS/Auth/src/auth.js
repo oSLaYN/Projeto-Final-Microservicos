@@ -12,8 +12,8 @@ app.use(express.urlencoded({extended: true}));
 routes.get('/isAuthorized', async(req, res) => {
     try {
         const isUserAuthorized = await UserAuthorized(req.cookies?.clientToken);
-        if (!isUserAuthorized) return res.status(400).send("Sessão Inválida, Sem Acesso.");
-        return res.status(200).send("Sessão Válida com Sucesso.");
+        if (!isUserAuthorized) return res.status(400).json({message: "Sessão Inválida, Sem Acesso."});
+        return res.status(200).json({message: "Sessão Validada com Sucesso."});
     } catch (error) {
         return res.status(500).json({message: 'Ocorreu um Erro: ', error})
     }
