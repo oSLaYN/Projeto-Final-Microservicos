@@ -95,16 +95,16 @@ form input {
     font-weight: bolder;
 }
 
-#RegisterForm, #LoginForm{
+#registerForm, #loginForm{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#RegisterForm input[type="text"],
-#RegisterForm input[type="password"],
-#LoginForm input[type="text"],
-#LoginForm input[type="password"] {
+#registerForm input[type="text"],
+#registerForm input[type="password"],
+#loginForm input[type="text"],
+#loginForm input[type="password"] {
     border: none;
     border-bottom: 1px solid #0a0a54; 
     padding: 8px;
@@ -116,8 +116,8 @@ form input {
     font-size: 16px;
 }
 
-#RegisterForm input[type="submit"],
-#LoginForm input[type="submit"] {
+#registerForm input[type="submit"],
+#loginForm input[type="submit"] {
     margin-top: 10px;
     padding: 10px 20px;
     border: none;
@@ -127,8 +127,8 @@ form input {
     font-size: 16px;
 }
 
-#LoginForm input[type="submit"]:hover,
-#RegisterForm input[type="submit"]:hover {
+#loginForm input[type="submit"]:hover,
+#registerForm input[type="submit"]:hover {
     background-color: #323253;
 }
 
