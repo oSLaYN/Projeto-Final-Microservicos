@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 var routes = express.Router();
@@ -24,6 +25,8 @@ routes.post('/register', async(req, res) => {
         const { username, fullname, password } = req.body;
         if (!username || !fullname || !password) { return res.status(400).json({ message: "Todos os campos são obrigatórios." }); }
 
+        const token = req.query?.token;
+        if (!token || (token != process.env.ADMIN_TOKEN)) { return res.status(400).json({message: "Sem Permissão, Acesso Negado."})}
         try {
             const response = await fetch(`http://10.96.18.2/api/users/getUser?username=${encodeURIComponent(username)}`);
             if (!response.ok) { return res.status(500).json({message: 'Ocorreu um Erro: ', error}) }
@@ -34,7 +37,7 @@ routes.post('/register', async(req, res) => {
             const createdUserResponse = await fetch(`http://10.96.18.2/api/users/createUser`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, fullname, password: cipherPassword }),
+                body: JSON.stringify({ username, fullname, password: cipherPassword, type: "admin" }),
             });
 
             if (!createdUserResponse.ok) {

@@ -4,13 +4,14 @@ const jwtSign = util.promisify(jwt.sign);
 const jwtVerify = util.promisify(jwt.verify);
 var functions = {};
 
-functions.createToken = async(id, username, fullname) => {
+functions.createToken = async(id, username, fullname, type) => {
     try {
         const token = await jwtSign(
             {
                 id: id,
                 username: username,
-                fullname: fullname
+                fullname: fullname,
+                type: type
             },
             "kubernetes",
             { expiresIn: "1h" }
@@ -35,9 +36,16 @@ functions.isAuthorized = async(token, req) => {
             }
         });
 
-        console.log("Authorized!");
-        req.user = decoded;
-        return true;
+        const response = await fetch(`http://10.96.18.2/api/users/getUser?username=${encodeURIComponent(decoded.username)}`);
+        if (!response.ok) { return res.status(500).json({message: 'Ocorreu um Erro: ', error}) }
+        const existingUsers = await response.json();
+        if (Array.isArray(existingUsers) && existingUsers.length > 0) {
+            console.log("Authorized!");
+            const user = existingUsers[0];
+            req.user = {id: user.id, username: user.username, fullname: user.fullname, type: user.type};
+            return true;
+        }
+        return false;
     } catch (error) {
         console.error('Not Authorized!', error);
         return false;

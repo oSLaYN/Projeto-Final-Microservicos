@@ -14,7 +14,7 @@ routes.get("/getTasks", async (req, res) => {
         if (!userid || userid==null) return res.status(404).send("ID de Utilizador Inválido.");
         try {
             const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
-            if (!isAuthorized) { return res.status(400).json({message: "Sessão Inválida, Sem Acesso."})}
+            if (!isAuthorized.ok) { return res.status(400).json({ message: "Sessão Inválida, Sem Acesso." });}
             try {
                 const results = await sqlQuery("SELECT * FROM tasks WHERE userid = ?", [userid]);
                 return res.status(200).json(results);
@@ -34,7 +34,7 @@ routes.post("/createTask", async (req, res) => {
         const {userid, title, description} = req.body;
         try {
             const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
-            if (!isAuthorized) { return res.status(400).json({message: "Sessão Inválida, Sem Acesso."})}
+            if (!isAuthorized.ok) { return res.status(400).json({ message: "Sessão Inválida, Sem Acesso." });}
             try {
                 const response = await fetch(`http://10.96.18.2/api/users/getUserByID?id=${userid}`);
                 const existingUsers = await response.json();
@@ -63,7 +63,7 @@ routes.post("/updateTask", async (req, res) => {
         const {taskid, tasktitle, taskinfo, taskstatus} = req.body;
         try {
             const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
-            if (!isAuthorized) { return res.status(400).json({message: "Sessão Inválida, Sem Acesso."})}
+            if (!isAuthorized.ok) { return res.status(400).json({ message: "Sessão Inválida, Sem Acesso." });}
             try {
                 const results = await sqlQuery("UPDATE tasks SET title=?, description=?, done=? WHERE id=?", [tasktitle, taskinfo, taskstatus, taskid]);
                 return res.status(200).json(results);
@@ -84,7 +84,7 @@ routes.delete("/deleteTask", async (req, res) => {
         if (!taskid || taskid == null) return res.status(404).send("Informação da Tarefa Inválida.");
         try {
             const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
-            if (!isAuthorized) { return res.status(400).json({message: "Sessão Inválida, Sem Acesso."})}
+            if (!isAuthorized.ok) { return res.status(400).json({ message: "Sessão Inválida, Sem Acesso." });}
             try {
                 const results = await sqlQuery("DELETE FROM tasks WHERE id=?", [taskid]);
                 return res.status(200).json(results);
