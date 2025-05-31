@@ -38,8 +38,8 @@
             <form id="createUserForm">
                 <input type="text" name="username" placeholder="Username" required><br><br>
                 <input type="text" name="fullname" placeholder="Nome completo" required><br><br>
-                <select name="tipo" required>
-                    <option value="" disabled selected>Tipo de utilizador</option>
+                <select name="type" required>
+                    <option value="" disabled selected>Tipo de Utilizador</option>
                     <option value="admin">Administrador</option>
                     <option value="normal">Normal</option>
                 </select><br><br>
@@ -96,7 +96,7 @@
 
         async function carregarUtilizadores() {
             try {
-                const response = await fetch('/api/users/list');
+                const response = await fetch('/api/users/getUsers');
                 if (!response.ok) throw new Error('Erro ao carregar utilizadores');
 
                 const users = await response.json();
@@ -109,9 +109,9 @@
                         <td>${user.id}</td>
                         <td>${user.username}</td>
                         <td>${user.fullname}</td>
-                        <td>${user.tipo}</td>
+                        <td>${user.type}</td>
                         <td style="text-align: right;">
-                            <button onclick="openEditModal(${user.id}, '${escapeQuotes(user.username)}', '${escapeQuotes(user.fullname)}', '${user.tipo}')">Editar</button>
+                            <button onclick="openEditModal(${user.id}, '${escapeQuotes(user.username)}', '${escapeQuotes(user.fullname)}', '${user.type}')">Editar</button>
                             <button onclick="eliminarUtilizador(${user.id})">Eliminar</button>
                         </td>
                     `;
@@ -133,11 +133,11 @@
             const user = {
                 username: form.username.value.trim(),
                 fullname: form.fullname.value.trim(),
-                tipo: form.tipo.value
+                type: form.type.value
             };
 
             try {
-                const response = await fetch('/api/users/create', {
+                const response = await fetch('/api/users/createUser', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(user)
@@ -152,11 +152,11 @@
             }
         });
 
-        function openEditModal(id, username, fullname, tipo) {
+        function openEditModal(id, username, fullname, type) {
             currentUserEditingId = id;
             document.getElementById('editUsername').value = username;
             document.getElementById('editFullname').value = fullname;
-            document.getElementById('editTipo').value = tipo;
+            document.getElementById('editType').value = type;
 
             document.getElementById('editUserModal').style.display = 'flex';
             document.body.classList.add('modal-open');
@@ -169,11 +169,11 @@
                 id: currentUserEditingId,
                 username: document.getElementById('editUsername').value.trim(),
                 fullname: document.getElementById('editFullname').value.trim(),
-                tipo: document.getElementById('editTipo').value
+                type: document.getElementById('editType').value
             };
 
             try {
-                const response = await fetch('/api/users/update', {
+                const response = await fetch('/api/users/updateUser', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(updatedUser)
@@ -198,7 +198,7 @@
             }
         
             try {
-                const response = await fetch(`/api/users/get?id=${userId}`);  // Supondo essa rota na API
+                const response = await fetch(`/api/users/getUserByID?id=${userId}`);  // Supondo essa rota na API
                 if (!response.ok) throw new Error('Utilizador não encontrado.');
             
                 const user = await response.json();
@@ -208,7 +208,7 @@
                     <p><strong>ID:</strong> ${user.id}</p>
                     <p><strong>Username:</strong> ${user.username}</p>
                     <p><strong>Nome Completo:</strong> ${user.fullname}</p>
-                    <p><strong>Tipo:</strong> ${user.tipo}</p>
+                    <p><strong>Tipo:</strong> ${user.type}</p>
                 `;
             } catch (error) {
                 userDetailsDiv.innerHTML = `<p style="color: red;">${error.message}</p>`;
@@ -220,7 +220,7 @@
             if (!confirmar) return;
 
             try {
-                const response = await fetch(`/api/users/delete?id=${id}`, {
+                const response = await fetch(`/api/users/deleteUser?id=${id}`, {
                     method: 'DELETE'
                 });
 

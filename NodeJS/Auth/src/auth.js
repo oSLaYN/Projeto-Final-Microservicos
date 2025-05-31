@@ -34,7 +34,7 @@ routes.post('/register', async(req, res) => {
             if (Array.isArray(existingUsers) && existingUsers.length > 0) { return res.status(400).json({ message: "Credenciais já existentes." }); }
 
             const cipherPassword = await bcrypt.hash(password, 12);
-            const createdUserResponse = await fetch(`http://10.96.18.2/api/users/createUser`, {
+            const createdUserResponse = await fetch(`http://10.96.18.2/api/users/createUser?token=${token}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, fullname, password: cipherPassword, type: "admin" }),
