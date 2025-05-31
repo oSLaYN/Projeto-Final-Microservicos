@@ -13,7 +13,7 @@ routes.get("/getTasks", async (req, res) => {
         const userid = (req.query && req.query.userid ? req.query.userid : null)
         if (!userid || userid==null) return res.status(404).send("ID de Utilizador Inválido.");
         try {
-            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
+            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized', {credentials: 'include', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${req.cookies?.clientToken}`}});
             if (!isAuthorized.ok) { return res.status(400).json({ message: "Sessão Inválida, Sem Acesso." });}
             try {
                 const results = await sqlQuery("SELECT * FROM tasks WHERE userid = ?", [userid]);
@@ -33,7 +33,7 @@ routes.post("/createTask", async (req, res) => {
     try {
         const {userid, title, description} = req.body;
         try {
-            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
+            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized', {credentials: 'include', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${req.cookies?.clientToken}`}});
             if (!isAuthorized.ok) { return res.status(400).json({ message: "Sessão Inválida, Sem Acesso." });}
             try {
                 const response = await fetch(`http://10.96.18.2/api/users/getUserByID?id=${userid}`);
@@ -62,7 +62,7 @@ routes.post("/updateTask", async (req, res) => {
     try { 
         const {taskid, tasktitle, taskinfo, taskstatus} = req.body;
         try {
-            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
+            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized', {credentials: 'include', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${req.cookies?.clientToken}`}});
             if (!isAuthorized.ok) { return res.status(400).json({ message: "Sessão Inválida, Sem Acesso." });}
             try {
                 const results = await sqlQuery("UPDATE tasks SET title=?, description=?, done=? WHERE id=?", [tasktitle, taskinfo, taskstatus, taskid]);
@@ -83,7 +83,7 @@ routes.delete("/deleteTask", async (req, res) => {
         const taskid = (req.query && req.query.taskid ? req.query.taskid : null)
         if (!taskid || taskid == null) return res.status(404).send("Informação da Tarefa Inválida.");
         try {
-            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized');
+            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized', {credentials: 'include', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${req.cookies?.clientToken}`}});
             if (!isAuthorized.ok) { return res.status(400).json({ message: "Sessão Inválida, Sem Acesso." });}
             try {
                 const results = await sqlQuery("DELETE FROM tasks WHERE id=?", [taskid]);

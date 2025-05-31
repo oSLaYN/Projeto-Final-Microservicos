@@ -12,9 +12,11 @@ app.use(express.urlencoded({extended: true}));
 
 routes.get('/isAuthorized', async(req, res) => {
     try {
-        const isUserAuthorized = await UserAuthorized(req.cookies?.clientToken);
+        const token = req.headers.authorization?.split(" ")[1];
+        console.log(token);
+        const isUserAuthorized = await UserAuthorized(token);
         if (!isUserAuthorized) return res.status(400).json({message: "Sessão Inválida, Sem Acesso."});
-        return res.status(200).json({message: "Sessão Validada com Sucesso."});
+        return res.status(200).json({message: "Sessão Validada com Sucesso.", user: {id: user.id, username: user.username, type: user.type}});
     } catch (error) {
         return res.status(500).json({message: 'Ocorreu um Erro: ', error})
     }
@@ -64,9 +66,9 @@ routes.post('/login', async(req, res) => {
                 const user = existingUsers[0];
                 const isPasswordValid = await bcrypt.compare(password, user.password);
                 if (!isPasswordValid) { return res.status(400).send('Credenciais Inválidas.') }
-                const token = await auth.createToken(user.id, user.username, user.fullname);
+                const token = await auth.createToken(user.id, user.username, user.fullname, user.type);
                 if (!token) { return res.status(500).send('Ocorreu um Erro.') }
-                res.cookie('clientToken', token);
+                res.cookie('clientToken', token, { httpOnly: true, secure: false, sameSite: 'lax' });
                 return res.status(200).json({message: "Utilizador Autenticado com Sucesso!"});
             }
             return res.status(400).json({message: 'Credenciais Inválidas.'});
