@@ -252,7 +252,73 @@ form input {
     background-color: #c6c6eb;
 }
 
-/*----------------Popup (modal)------------------
+/*----------------Users------------------*/
+
+.users{
+    background-color: #fff;
+    border: solid 1px #050533;
+    border-radius: 20px;
+    width: 100%;
+    margin: 2%;
+}
+
+.usersTab {
+    text-align: center;
+    width: 50%;
+    background-color: #fff;
+    color: #050533;
+    margin: 2%;
+    padding: 2%;
+    border: 1px solid #050533;
+    border-radius: 10px;
+}
+
+.usersTab table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.usersTab th,
+.usersTab td {
+    border: 1px solid #050533;
+    padding: 5px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.usersTab th {
+    background-color: #e0e0f0;
+    font-weight: bold;
+}
+
+.usersTab td:last-child {
+    text-align: right;
+}
+
+.usersTab h1{
+    color: #050533; 
+    font-size: 22px;
+    font-weight: normal;
+}
+
+.users button {
+    text-align: right;
+    background-color: #050533;
+    color: #fff;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 0px;         
+}
+
+.users button:hover{
+    background-color: #454574;
+}
+
+/*----------------Popup (modal)------------------*/
 
 /* Modal (Popup) */
 /* Modal (Popup) */
