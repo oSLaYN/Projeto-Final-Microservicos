@@ -36,7 +36,8 @@ functions.isAuthorized = async(token, req) => {
             }
         });
 
-        const response = await fetch(`http://10.96.18.2/api/users/getUser?username=${encodeURIComponent(decoded.username)}`);
+        console.log(decoded);
+        const response = await fetch(`http://10.96.18.2/api/users/getUser?username=${decoded.username}`);
         if (!response.ok) { return res.status(500).json({message: 'Ocorreu um Erro: ', error}) }
         const existingUsers = await response.json();
         if (Array.isArray(existingUsers) && existingUsers.length > 0) {

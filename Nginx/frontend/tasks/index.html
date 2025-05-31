@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal de Criar Tarefa -->
+        <!-- Modal (Janela) de Criar Tarefa -->
         <div id="createTaskModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
@@ -55,7 +55,7 @@
                 </form>
             </div>
         </div>
-        <!-- Modal de Editar Tarefa -->
+        <!-- Modal (Janela) de Editar Tarefa -->
         <div id="editTaskModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeEditModal()">&times;</span>
@@ -71,81 +71,167 @@
                 </form>
             </div>
         </div>
-        <script>
-            function showTab(tabName) {
-                if (tabName === 'create') {
-                    document.getElementById('createTaskModal').style.display = 'flex';
-                    document.body.classList.add('modal-open');
-                }
-            }
+    <script>
+        // Ao carregar a página, inicia o carregamento de tarefas
+        window.onload = () => {
+            carregarTarefas();
+        };
 
-            function closeModal() {
-                document.getElementById('createTaskModal').style.display = 'none';
-                document.body.classList.remove('modal-open');
-            }
+        // ID de utilizador atual (pode vir de sessão futuramente)
+        const userid = 1;
+
+        // Estado da tarefa que está a ser editada
+        let currentTaskEditing = null;
 
         
-            // Fecha o modal se clicar fora dele
-            window.onclick = function(event) {
-                const modal = document.getElementById('createTaskModal');
-                if (event.target === modal) {
-                    closeModal();
-                }
-            }
-            
-            function openEditModal(button) {
-                const task = button.closest('.tasks');
-                const titulo = task.querySelector('h3').innerText;
-                const descricao = task.querySelector('.tasksDescription p').innerText;
-                const estado = task.querySelector('p:nth-of-type(2)')?.innerText || "Não Concluída"; // Estado da tarefa
-            
-                document.getElementById('editTitulo').value = titulo;
-                document.getElementById('editDescricao').value = descricao;
-                document.getElementById('editEstado').value = estado;
-            
-                document.getElementById('editTaskModal').style.display = 'flex';
+        //Mostra o modal de criação de tarefa
+        function showTab(tabName) {
+            if (tabName === 'create') {
+                document.getElementById('createTaskModal').style.display = 'flex';
                 document.body.classList.add('modal-open');
-            
-                // Armazena a referência da tarefa atual para depois atualizar
-                currentTaskEditing = task;
             }
+        }
+
+        //Fecha o modal de criação
+        function closeModal() {
+            document.getElementById('createTaskModal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        //Fecha o modal de edição
+        function closeEditModal() {
+            document.getElementById('editTaskModal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        //Fecha o modal ao clicar fora dele
+        window.addEventListener('click', function (event) {
+            const createModal = document.getElementById('createTaskModal');
+            const editModal = document.getElementById('editTaskModal');
+
+            if (event.target === createModal) closeModal();
+            if (event.target === editModal) closeEditModal();
+        });
+
         
-            function closeEditModal() {
-                document.getElementById('editTaskModal').style.display = 'none';
-                document.body.classList.remove('modal-open');
-            }
-        
-            // Fecha modal se clicar fora
-            window.onclick = function(event) {
-                const createModal = document.getElementById('createTaskModal');
-                const editModal = document.getElementById('editTaskModal');
-            
-                if (event.target === createModal) closeModal();
-                if (event.target === editModal) closeEditModal();
-            }
-        
-            // Referência da tarefa sendo editada
-            let currentTaskEditing = null;
-        
-            document.getElementById('editTaskForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-            
-                const newTitulo = document.getElementById('editTitulo').value;
-                const newDescricao = document.getElementById('editDescricao').value;
-                const newEstado = document.getElementById('editEstado').value;
-            
-                // Atualiza os campos diretamente
-                currentTaskEditing.querySelector('h3').innerText = newTitulo;
-                currentTaskEditing.querySelector('.tasksDescription p').innerText = newDescricao;
-                const estadoParagrafo = currentTaskEditing.querySelector('p:nth-of-type(2)');
-                if (estadoParagrafo) {
-                    estadoParagrafo.innerText = newEstado;
-                }
-            
-                closeEditModal();
+        //Carrega as tarefas do utilizador e mostra no ecrã
+        async function carregarTarefas() {
+            const response = await fetch(`/api/tasks/getTasks?userid=${userid}`);
+            const tarefas = await response.json();
+
+            const container = document.querySelector('.tasksTab');
+            container.innerHTML = '<h1>Visualizar Tarefas</h1>'; // Limpa para evitar duplicações
+
+            tarefas.forEach(tarefa => {
+                const taskDiv = document.createElement('div');
+                taskDiv.classList.add('tasks');
+                taskDiv.dataset.taskid = tarefa.id;
+
+                taskDiv.innerHTML = `
+                    <h3>${tarefa.title}</h3>
+                    <div class="tasksDescription">
+                        <p>${tarefa.description}</p>
+                    </div>
+                    <p><strong>Estado:</strong> <span class="taskState">${tarefa.done ? 'Concluída' : 'Não Concluída'}</span></p>
+                    <div class="tasksButtons">
+                        <button onclick="openEditModal(this)">Editar Tarefa</button>
+                        <button onclick="eliminarTarefa(${tarefa.id})">Eliminar Tarefa</button>
+                    </div>
+                `;
+                container.appendChild(taskDiv);
             });
-        </script>
-        <script src="../scripts.js"></script>
+        }
+
+        //Envia a criação de uma nova tarefa ao servidor
+        document.getElementById('createTaskForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const title = form.titulo.value;
+            const description = form.descricao.value;
+
+            const body = {
+                userid,
+                title,
+                description
+            };
+
+            const response = await fetch('/api/tasks/createTask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            if (response.ok) {
+                closeModal();
+                await carregarTarefas();
+            } else {
+                alert("Erro ao criar tarefa.");
+            }
+        });
+
+        //Abre o modal de edição e preenche os campos
+        function openEditModal(button) {
+            const task = button.closest('.tasks');
+            currentTaskEditing = task;
+
+            const titulo = task.querySelector('h3').innerText;
+            const descricao = task.querySelector('.tasksDescription p').innerText;
+            const estado = task.querySelector('.taskState').innerText;
+
+            document.getElementById('editTitulo').value = titulo;
+            document.getElementById('editDescricao').value = descricao;
+            document.getElementById('editEstado').value = estado;
+
+            document.getElementById('editTaskModal').style.display = 'flex';
+            document.body.classList.add('modal-open');
+        }
+
+        //Submete os dados da tarefa editada ao servidor
+        document.getElementById('editTaskForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const id = currentTaskEditing.dataset.taskid;
+            const title = document.getElementById('editTitulo').value;
+            const description = document.getElementById('editDescricao').value;
+            const estado = document.getElementById('editEstado').value === 'Concluída' ? 1 : 0;
+
+            const body = {
+                taskid: id,
+                tasktitle: title,
+                taskinfo: description,
+                taskstatus: estado
+            };
+
+            const response = await fetch('/api/tasks/updateTask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            if (response.ok) {
+                closeEditModal();
+                await carregarTarefas();
+            } else {
+                alert("Erro ao editar tarefa.");
+            }
+        });
+
+        //Elimina uma tarefa com confirmação
+        async function eliminarTarefa(id) {
+            const confirmar = confirm("Tens a certeza que queres eliminar esta tarefa?");
+            if (!confirmar) return;
+
+            const response = await fetch(`/api/tasks/deleteTask?taskid=${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                await carregarTarefas();
+            } else {
+                alert("Erro ao eliminar tarefa.");
+            }
+        }
+    </script>
     </body>
-    <script src="../scripts.js"></script>
 </html>

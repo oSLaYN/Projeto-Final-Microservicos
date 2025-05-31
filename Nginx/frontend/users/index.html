@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../styles.css">
+    <title>Utilizadores</title>
+</head>
+<body>
+    <div class="tab-buttons">
+        <button onclick="showTab('create')">Criar Utilizador</button>
+    </div>
+
+    <div class="usersTab">
+        <h1>Visualizar Utilizadores</h1>
+            <input type="number" id="userIdInput" placeholder="Introduzir ID do utilizador" />
+            <button onclick="buscarUtilizadorPorId()">Buscar Utilizador</button>
+            <div id="userDetails" style="margin-top: 10px;"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Nome Completo</th>
+                    <th>Tipo</th>
+                    <th style="text-align: right;">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="userList">
+                <!-- Usuários carregados dinamicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de Criar Utilizador -->
+    <div id="createUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Criar Novo Utilizador</h2>
+            <form id="createUserForm">
+                <input type="text" name="username" placeholder="Username" required><br><br>
+                <input type="text" name="fullname" placeholder="Nome completo" required><br><br>
+                <select name="type" required>
+                    <option value="" disabled selected>Tipo de Utilizador</option>
+                    <option value="admin">Administrador</option>
+                    <option value="normal">Normal</option>
+                </select><br><br>
+                <input type="submit" value="Criar Utilizador">
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Editar Utilizador -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Editar Utilizador</h2>
+            <form id="editUserForm">
+                <input type="text" id="editUsername" name="username" required><br><br>
+                <input type="text" id="editFullname" name="fullname" required><br><br>
+                <select id="editTipo" name="tipo" required>
+                    <option value="admin">Administrador</option>
+                    <option value="normal">Normal</option>
+                </select><br><br>
+                <input type="submit" value="Guardar Alterações">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => carregarUtilizadores();
+
+        let currentUserEditingId = null;
+
+        function showTab(tabName) {
+            if (tabName === 'create') {
+                document.getElementById('createUserModal').style.display = 'flex';
+                document.body.classList.add('modal-open');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('createUserModal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        window.addEventListener('click', function (event) {
+            const createModal = document.getElementById('createUserModal');
+            const editModal = document.getElementById('editUserModal');
+            if (event.target === createModal) closeModal();
+            if (event.target === editModal) closeEditModal();
+        });
+
+        async function carregarUtilizadores() {
+            try {
+                const response = await fetch('/api/users/getUsers');
+                if (!response.ok) throw new Error('Erro ao carregar utilizadores');
+
+                const users = await response.json();
+                const tbody = document.getElementById('userList');
+                tbody.innerHTML = '';
+
+                users.forEach(user => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.fullname}</td>
+                        <td>${user.type}</td>
+                        <td style="text-align: right;">
+                            <button onclick="openEditModal(${user.id}, '${escapeQuotes(user.username)}', '${escapeQuotes(user.fullname)}', '${user.type}')">Editar</button>
+                            <button onclick="eliminarUtilizador(${user.id})">Eliminar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
+        // Função para escapar aspas em strings para evitar erro na inserção no onclick
+        function escapeQuotes(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        document.getElementById('createUserForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const user = {
+                username: form.username.value.trim(),
+                fullname: form.fullname.value.trim(),
+                type: form.type.value
+            };
+
+            try {
+                const response = await fetch('/api/users/createUser', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
+                });
+
+                if (!response.ok) throw new Error('Erro ao criar utilizador.');
+
+                closeModal();
+                carregarUtilizadores();
+            } catch (err) {
+                alert(err.message);
+            }
+        });
+
+        function openEditModal(id, username, fullname, type) {
+            currentUserEditingId = id;
+            document.getElementById('editUsername').value = username;
+            document.getElementById('editFullname').value = fullname;
+            document.getElementById('editType').value = type;
+
+            document.getElementById('editUserModal').style.display = 'flex';
+            document.body.classList.add('modal-open');
+        }
+
+        document.getElementById('editUserForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const updatedUser = {
+                id: currentUserEditingId,
+                username: document.getElementById('editUsername').value.trim(),
+                fullname: document.getElementById('editFullname').value.trim(),
+                type: document.getElementById('editType').value
+            };
+
+            try {
+                const response = await fetch('/api/users/updateUser', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedUser)
+                });
+
+                if (!response.ok) throw new Error('Erro ao atualizar utilizador.');
+
+                closeEditModal();
+                carregarUtilizadores();
+            } catch (err) {
+                alert(err.message);
+            }
+        });
+
+        async function buscarUtilizadorPorId() {
+            const userId = document.getElementById('userIdInput').value.trim();
+            const userDetailsDiv = document.getElementById('userDetails');
+        
+            if (!userId) {
+                userDetailsDiv.innerHTML = '<p style="color: red;">Por favor, insira um ID válido.</p>';
+                return;
+            }
+        
+            try {
+                const response = await fetch(`/api/users/getUserByID?id=${userId}`);  // Supondo essa rota na API
+                if (!response.ok) throw new Error('Utilizador não encontrado.');
+            
+                const user = await response.json();
+            
+                // Mostrar detalhes do utilizador
+                userDetailsDiv.innerHTML = `
+                    <p><strong>ID:</strong> ${user.id}</p>
+                    <p><strong>Username:</strong> ${user.username}</p>
+                    <p><strong>Nome Completo:</strong> ${user.fullname}</p>
+                    <p><strong>Tipo:</strong> ${user.type}</p>
+                `;
+            } catch (error) {
+                userDetailsDiv.innerHTML = `<p style="color: red;">${error.message}</p>`;
+            }
+        }
+
+        async function eliminarUtilizador(id) {
+            const confirmar = confirm('Tens a certeza que queres eliminar este utilizador?');
+            if (!confirmar) return;
+
+            try {
+                const response = await fetch(`/api/users/deleteUser?id=${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Erro ao eliminar utilizador.');
+
+                carregarUtilizadores();
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+    </script>
+</body>
+</html>

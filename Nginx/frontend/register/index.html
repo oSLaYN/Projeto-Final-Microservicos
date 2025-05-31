@@ -7,13 +7,35 @@
     <body>
         <div>
             <h2>Registration</h2>
-            <form id="RegisterForm">
-                <input id="username" type="text" placeholder="Username" required>
-                <br>
-                <input id="password" type="password" placeholder="Password" required>
-                <input type="submit" value="Register">
+            <form id="registerForm">
+                <input type="text" id="username" placeholder="Username" required><br>
+                <input type="text" id="fullname" placeholder="Nome completo" required><br>
+                <input type="password" id="password" placeholder="Password" required><br>
+                <button type="submit">Registar</button>
             </form>
+              <p id="mensagem"></p>
         </div>
     </body>
-    <script src="../scripts.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function (e) {
+          e.preventDefault();
+
+          const username = document.getElementById('username').value;
+          const fullname = document.getElementById('fullname').value;
+          const password = document.getElementById('password').value;
+
+          const tokenAdmin = 'microsservices'; // 
+
+          const response = await fetch(`/api/auth/register?token=${tokenAdmin}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, fullname, password })
+          });
+
+          const resultado = await response.json();
+          document.getElementById('mensagem').innerText = resultado.message || 'Erro no registo.';
+        });
+    </script>
 </html>
