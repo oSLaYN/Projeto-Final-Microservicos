@@ -28,14 +28,15 @@ routes.post('/register', async(req, res) => {
         if (!username || !fullname || !password || !type) { return res.status(400).json({ message: "Todos os campos são obrigatórios." }); }
 
         const token = req.query?.token;
+        const clientToken = req.cookies?.clientToken;
         if (!token || (token != process.env.ADMIN_TOKEN)) {
-            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized', {credentials: 'include', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${req.cookies?.clientToken}` }});
+            const isAuthorized = await fetch('http://10.96.18.2/api/auth/isAuthorized', {credentials: 'include', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${clientToken}` }});
             if (!isAuthorized.ok) { return res.status(400).json({ message: "Sessão Inválida, Sem Acesso." });}
             const userData = await isAuthorized.json();
             if (userData.user.type != "admin") { return res.status(400).json({ message: "Acesso Negado, Sem Acesso." }); }
         }
         try {
-            const response = await fetch(`http://10.96.18.2/api/users/createUser?token=${token}`, {method: 'POST', credentials: 'include', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${req.cookies?.clientToken}` }, body: JSON.stringify({username,fullname,password,type})});
+            const response = await fetch(`http://10.96.18.2/api/users/createUser?token=${token}`, {method: 'POST', credentials: 'include', headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${clientToken}` }, body: JSON.stringify({username,fullname,password,type})});
             if (!response.ok) { const errorText = await response.text(); return res.status(500).json({message: 'Ocorreu um Erro: ' + errorText}) }
             return res.status(200).json({ message: "Utilizador criado com sucesso!" });
         } catch (error) {

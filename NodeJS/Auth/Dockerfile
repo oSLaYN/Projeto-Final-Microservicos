@@ -7,6 +7,8 @@ RUN npm install
 
 COPY . .
 
+COPY .env .env
+
 RUN ls -la /usr/src/app/src/
 
 CMD ["node", "src/index.js"]
