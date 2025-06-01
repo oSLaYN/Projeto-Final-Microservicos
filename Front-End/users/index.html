@@ -11,9 +11,6 @@
 
     <div class="usersTab">
         <h1>Visualizar Utilizadores</h1>
-            <input type="number" id="userIdInput" placeholder="Introduzir ID do utilizador" />
-            <button onclick="buscarUtilizadorPorId()">Buscar Utilizador</button>
-            <div id="userDetails" style="margin-top: 10px;"></div>
         <table>
             <thead>
                 <tr>
@@ -139,7 +136,7 @@
             };
 
             try {
-                const response = await fetch('/api/auth/createUser', {
+                const response = await fetch('/api/users/createUser', {
                     method: 'POST',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
@@ -191,33 +188,6 @@
                 alert(err.message);
             }
         });
-
-        async function buscarUtilizadorPorId() {
-            const userId = document.getElementById('userIdInput').value.trim();
-            const userDetailsDiv = document.getElementById('userDetails');
-        
-            if (!userId) {
-                userDetailsDiv.innerHTML = '<p style="color: red;">Por favor, insira um ID válido.</p>';
-                return;
-            }
-        
-            try {
-                const response = await fetch(`/api/users/getUserByID?id=${userId}`);  // Supondo essa rota na API
-                if (!response.ok) throw new Error('Utilizador não encontrado.');
-            
-                const user = await response.json();
-            
-                // Mostrar detalhes do utilizador
-                userDetailsDiv.innerHTML = `
-                    <p><strong>ID:</strong> ${user.id}</p>
-                    <p><strong>Username:</strong> ${user.username}</p>
-                    <p><strong>Nome Completo:</strong> ${user.fullname}</p>
-                    <p><strong>Tipo:</strong> ${user.type}</p>
-                `;
-            } catch (error) {
-                userDetailsDiv.innerHTML = `<p style="color: red;">${error.message}</p>`;
-            }
-        }
 
         async function eliminarUtilizador(id) {
             const confirmar = confirm('Tens a certeza que queres eliminar este utilizador?');
