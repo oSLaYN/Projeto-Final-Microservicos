@@ -38,10 +38,11 @@
             <form id="createUserForm">
                 <input type="text" name="username" placeholder="Username" required><br><br>
                 <input type="text" name="fullname" placeholder="Nome completo" required><br><br>
+                <input type="password" name="password" placeholder="Password" required><br><br>
                 <select name="type" required>
                     <option value="" disabled selected>Tipo de Utilizador</option>
                     <option value="admin">Administrador</option>
-                    <option value="normal">Normal</option>
+                    <option value="user">Utilizador</option>
                 </select><br><br>
                 <input type="submit" value="Criar Utilizador">
             </form>
@@ -58,7 +59,7 @@
                 <input type="text" id="editFullname" name="fullname" required><br><br>
                 <select id="editTipo" name="tipo" required>
                     <option value="admin">Administrador</option>
-                    <option value="normal">Normal</option>
+                    <option value="user">Utilizador</option>
                 </select><br><br>
                 <input type="submit" value="Guardar Alterações">
             </form>
@@ -133,6 +134,7 @@
             const user = {
                 username: form.username.value.trim(),
                 fullname: form.fullname.value.trim(),
+                password: form.password.value.trim(),
                 type: form.type.value
             };
 
