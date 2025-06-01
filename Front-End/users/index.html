@@ -57,7 +57,7 @@
             <form id="editUserForm">
                 <input type="text" id="editUsername" name="username" required><br><br>
                 <input type="text" id="editFullname" name="fullname" required><br><br>
-                <select id="editTipo" name="tipo" required>
+                <select id="editType" name="type" required>
                     <option value="admin">Administrador</option>
                     <option value="user">Utilizador</option>
                 </select><br><br>
@@ -112,7 +112,7 @@
                         <td>${user.fullname}</td>
                         <td>${user.type}</td>
                         <td style="text-align: right;">
-                            <button onclick="openEditModal(${user.id}, '${escapeQuotes(user.username)}', '${escapeQuotes(user.fullname)}', '${user.type}')">Editar</button>
+                            <button onclick="openEditModal(${user.id}, '${escapeQuotes(user.username)}', '${escapeQuotes(user.fullname)}', '${escapeQuotes(user.type)}')">Editar</button>
                             <button onclick="eliminarUtilizador(${user.id})">Eliminar</button>
                         </td>
                     `;
@@ -139,8 +139,9 @@
             };
 
             try {
-                const response = await fetch('/api/users/createUser', {
+                const response = await fetch('/api/auth/createUser', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(user)
                 });
@@ -177,6 +178,7 @@
             try {
                 const response = await fetch('/api/users/updateUser', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(updatedUser)
                 });
@@ -223,6 +225,7 @@
 
             try {
                 const response = await fetch(`/api/users/deleteUser?id=${id}`, {
+                    credentials: 'include',
                     method: 'DELETE'
                 });
 
