@@ -16,21 +16,30 @@
 
 
 -- A despejar estrutura da base de dados para users
+DROP DATABASE IF EXISTS `users`;
 CREATE DATABASE IF NOT EXISTS `users` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `users`;
 
 -- A despejar estrutura para tabela users.users
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
+  `username` longtext NOT NULL,
   `fullname` longtext NOT NULL,
   `password` longtext NOT NULL,
+  `type` varchar(50) NOT NULL DEFAULT 'user',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela users.users: ~0 rows (aproximadamente)
+-- A despejar dados para tabela users.users: ~3 rows (aproximadamente)
 DELETE FROM `users`;
+INSERT INTO `users` (`id`, `username`, `fullname`, `password`, `type`) VALUES
+	(3, 'paiva', 'Rodrigo Paiva', '$2b$12$MhQrr/vphBXolq72jWhrkeCpbZsfLOvJXxlxuu8TJ7NlZvPZika6m', 'admin');
+INSERT INTO `users` (`id`, `username`, `fullname`, `password`, `type`) VALUES
+	(8, 'artur', 'Artur Faria', '$2b$12$hEdiAv1/a7JD.reVCuur0el9oUHMzkEmp93DltRiR33NXQ9dOMfJy', 'admin');
+INSERT INTO `users` (`id`, `username`, `fullname`, `password`, `type`) VALUES
+	(9, 'miguel', 'Miguel Santos', '$2b$12$.HWIT./v2YCV0BH17Lw2yOGhZssjpcND2JIzq31Vg2qkQnO/bILUO', 'admin');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

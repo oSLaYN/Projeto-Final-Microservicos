@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: auth-node
-        image: auth-node:1.0  # Será atualizado
+        image: auth-node:1.0
         imagePullPolicy: Never
         ports:
         - containerPort: 2500

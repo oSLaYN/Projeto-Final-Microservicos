@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: tasks-node
-        image: tasks-node:1.0  # Será atualizado
+        image: tasks-node:1.0
         imagePullPolicy: Never
         ports:
         - containerPort: 2750

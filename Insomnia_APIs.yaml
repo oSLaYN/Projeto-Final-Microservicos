@@ -1,0 +1,213 @@
+type: collection.insomnia.rest/5.0
+name: Scratch Pad
+meta:
+  id: wrk_scratchpad
+  created: 1747822790980
+  modified: 1747822790980
+collection:
+  - url: http://localhost/api/users/createUser
+    name: AUTH-REGISTER
+    meta:
+      id: req_2793286d62ce4a9c9987227ba9c50f92
+      created: 1747822802440
+      modified: 1748805466757
+      isPrivate: false
+      sortKey: -1747822802440
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "artur",
+        	"fullname": "Artur Maria",
+        	"password": "artur",
+        	"type": "admin"
+        }
+    parameters:
+      - id: pair_684522ba3b0f4bd6a1cdecf898e37292
+        disabled: false
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_9c8ce2349ff440999dc94a334adb23fe
+      - name: User-Agent
+        value: insomnia/11.1.0
+        id: pair_8505759f02224c4fb5609019686bd6fe
+      - id: pair_9d2e07e644554bd9a0490e070dd494a2
+        name: clientToken
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJwYWl2YSIsImZ1bGxuYW1lIjoiUm9kcmlnbyBQYWl2YSIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTc0ODc2ODY0MCwiZXhwIjoxNzQ4NzcyMjQwfQ.UEJHwGufchQk6o8danlSZHxdAbPAdHl0PXQK4WlcV7s
+        disabled: false
+        type: text
+        multiline: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost/api/tasks/getTasks?userid=3
+    name: TASKS-GETTASKS
+    meta:
+      id: req_1ef1dacbcfc049aeae6525ef6a70d635
+      created: 1748248020628
+      modified: 1748816694500
+      isPrivate: false
+      sortKey: -1748248020629
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost/api/users/getUsers
+    name: GETUSERS-NGINX
+    meta:
+      id: req_d8e28379d20f481790870a0d0a44509e
+      created: 1748421726158
+      modified: 1748813283992
+      isPrivate: false
+      sortKey: -1748421726158
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost/api/auth/login
+    name: AUTH-LOGIN
+    meta:
+      id: req_ddba19bbb53d460cb229690b5b9e5f17
+      created: 1748765192080
+      modified: 1748766251624
+      isPrivate: false
+      sortKey: -1748765192080
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "paiva",
+        	"password": "paiva001"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost/api/tasks/createTask
+    name: CREATE TASK
+    meta:
+      id: req_c2cf63ea8e374416919db70e592c273d
+      created: 1748773012386
+      modified: 1748804539530
+      isPrivate: false
+      sortKey: -1748773012386
+    method: POST
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost/api/auth/register?token=microsservices
+    name: EXEMPLO REGISTO
+    meta:
+      id: req_52fcc9768d0644c6985291e897d6926f
+      created: 1748800921768
+      modified: 1748801174165
+      isPrivate: false
+      sortKey: -1748800921768
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "miguel",
+        	"fullname": "Miguel Santos",
+        	"password": "miguel123",
+        	"type": "admin"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost/api/auth/logout
+    name: LOGOUT
+    meta:
+      id: req_616ddffba3e0438ba91de07d5d318d8b
+      created: 1748800951311
+      modified: 1748800969304
+      isPrivate: false
+      sortKey: -1748800951311
+    method: POST
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1747822797267
+    modified: 1748813172686
+  cookies:
+    - key: clientToken
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJwYWl2YSIsImZ1bGxuYW1lIjoiUm9kcmlnbyBQYWl2YSIsInR5cGUiOiJhZG1pbiIsImlhdCI6MTc0ODgxMzE3MiwiZXhwIjoxNzQ4ODE2NzcyfQ.Zu1fu8aPqjIj66TgVZHbz8Pv1LhCmnf5WXQqnbu-Z-k
+      domain: localhost
+      path: /
+      httpOnly: true
+      hostOnly: true
+      creation: 2025-06-01T08:34:53.734Z
+      lastAccessed: 2025-06-01T21:26:12.686Z
+      sameSite: lax
+      id: b1d5e9d5-dcb4-46e1-a6b7-d5dda4fe39ea
+environments:
+  name: Base Environment
+  meta:
+    id: env_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1747822797027
+    modified: 1747822797027
+    isPrivate: false

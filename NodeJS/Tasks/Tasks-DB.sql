@@ -16,21 +16,26 @@
 
 
 -- A despejar estrutura da base de dados para tasks
+DROP DATABASE IF EXISTS `tasks`;
 CREATE DATABASE IF NOT EXISTS `tasks` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `tasks`;
 
 -- A despejar estrutura para tabela tasks.tasks
+DROP TABLE IF EXISTS `tasks`;
 CREATE TABLE IF NOT EXISTS `tasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
-  `task` longtext NOT NULL,
-  `done` tinyint(1) NOT NULL DEFAULT 0,
+  `title` longtext NOT NULL,
+  `description` longtext NOT NULL,
+  `done` int(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- A despejar dados para tabela tasks.tasks: ~0 rows (aproximadamente)
 DELETE FROM `tasks`;
+INSERT INTO `tasks` (`id`, `userid`, `title`, `description`, `done`) VALUES
+	(3, 3, 'Comer', 'Comer Arroz de Pato', 0);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
